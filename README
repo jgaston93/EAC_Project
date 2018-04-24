@@ -1,9 +1,15 @@
-1. To run the code
+1. Description
 
-	cc -o scheduler -O scheduler.c scimark/*.c
+	There are two main processes, the benchmark process and the scheduler process. The benchmark process runs the scimark benchmark and listens for a sleep signal from the scheduler thread in case it gets hot. This process can be pinned to a core or can be free to run on any core. 
+
+	The scheduler process periodically polls the temperature at a rate of the polling interval and determines whether or not to sleep the benchmark process based on the temperatures gathered and algorithm chosen. This process has no affinity set. 
+
+2. To run the code
+
+	cc -Iscimark -o scheduler -O scheduler.c scimark/*.c
 	./scheduler test.conf logfile.log
 
-2. Config file
+3. Config file
 
 	- Algorithm: Algorithm to use (unsigned int)
 		0 = Baseline
@@ -18,15 +24,4 @@
 		0 or 2 = physical core 0
 		1 or 3 = physical core 1
 		4 = any core
-
-3. Description
-
-	There are two main processes, the benchmark process and the scheduler process. The benchmark process
-runs the scimark benchmark and listens for a sleep signal from the scheduler thread in case it gets hot. This
-process can be pinned to a core or can be free to run on any core. 
-
-	The scheduler process periodically polls the temperature at a rate of the polling interval and determines 
-whether or not to sleep the benchmark process based on the temperatures gathered and algorithm chosen. This process 
-has no affinity set. 
-
 
